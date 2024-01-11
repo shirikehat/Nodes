@@ -1,4 +1,6 @@
-﻿namespace ConsoleApp10
+﻿using System.Globalization;
+
+namespace ConsoleApp10
 {
     internal class Program
     {
@@ -160,7 +162,7 @@
             lst.SetNext(newNode);
         }
 
-        public static void AddToMiddle<T>(Node<T> newNode, Node<T> lst)
+        public static void AddToMiddle(Node<int> newNode, Node<int> lst)
         {
             while (lst.HasNext() && lst.GetNext().GetValue() < newNode.GetValue())
             {
@@ -168,6 +170,38 @@
             }
             newNode.SetNext(lst.GetNext());
             lst.SetNext(newNode);
+        }
+
+        public static Node<int> Merge(Node<int> lst1, Node<int> lst2)
+        {
+            Node<int> comb = new Node<int>(lst1.GetValue());
+            lst1 = lst1.GetNext();
+            Node<int> tail = comb;
+            while (lst1 != null && lst2!=null)
+            {
+                tail.SetNext(new Node<int>(lst2.GetValue()));
+                tail= tail.GetNext();
+
+                tail.SetNext(new Node<int>(lst1.GetValue()));
+                tail = tail.GetNext();
+
+
+                lst1 =lst1.GetNext();
+                lst2 = lst2.GetNext(); 
+            }
+            while(lst1 != null)
+            {
+                tail.SetNext(new Node<int>(lst1.GetValue())); 
+                tail= tail.GetNext();
+                lst1 = lst1.GetNext();
+            }
+            while (lst2 != null)
+            {
+                tail.SetNext(new Node<int>(lst2.GetValue()));
+                tail = tail.GetNext();
+                lst2 = lst2.GetNext();
+            }
+            return comb;
         }
 
         static void Main(string[] args)
