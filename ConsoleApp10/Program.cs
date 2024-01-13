@@ -45,21 +45,17 @@ namespace ConsoleApp10
         //אורך הקלט n: כמות החוליות
         //המקרה הגרוע: שאין איקס בחוליות
         //הפעולה מתבצעת פעם 1 ובכל סיבוב הלולאה מתבצעות n מכאן שסיבוכיות הפעולה: n
-        public static bool IsExists<T>(Node<T> lst, T x)
+        public static bool IsExists<T>(Node<T> list, T value)
         {
-            while (lst.HasNext())
+            while (list != null)
             {
-                if (lst.GetValue().Equals(x))
-                {
+                if (list.GetValue().Equals(value))
                     return true;
-                }
-                else
-                {
-                    lst = lst.GetNext();
-                }
+                list = list.GetNext();
             }
             return false;
         }
+
         //אורך הקלט n: כמות החוליות
         //המקרה הגרוע: שאין איקס בחוליות
         //הפעולה מבצעת n  קריאות ובכל קריאה הלולאה מתבצעות 1 מכאן שסיבוכיות הפעולה: n
@@ -112,15 +108,21 @@ namespace ConsoleApp10
 
 
         //שאלה 6
-        public static Node<int> NewLst(Node<int> lst)
+        public static Node<int> NoDouble(Node<int> lst)
         {
             Node<int> head = new Node<int>(lst.GetValue());
-            lst = lst.GetNext();
+            Node<int> tail= head;  
+            
             while (lst != null && lst.HasNext())
             {
-                if (IsExists(lst, lst.GetValue()) && !IsExists(lst.GetNext(), lst.GetValue()))
-                    head.SetNext(lst.GetNext());
-                lst = lst.GetNext();
+                if(lst.GetNext().GetValue() == lst.GetValue())
+                {
+                    
+                    tail.SetNext(new Node<int>(lst.GetNext().GetNext().GetValue()));
+                    tail=tail.GetNext();
+                    
+                }
+                lst=lst.GetNext();
             }
             return head;
         }
@@ -162,8 +164,9 @@ namespace ConsoleApp10
             lst.SetNext(newNode);
         }
 
-        public static void AddToMiddle(Node<int> newNode, Node<int> lst)
+        public static void AddToMiddle(Node<int> lst, int val)
         {
+            Node<int> newNode = new Node<int>(val);
             while (lst.HasNext() && lst.GetNext().GetValue() < newNode.GetValue())
             {
                 lst = lst.GetNext();
@@ -171,6 +174,8 @@ namespace ConsoleApp10
             newNode.SetNext(lst.GetNext());
             lst.SetNext(newNode);
         }
+
+        
 
         public static Node<int> Merge(Node<int> lst1, Node<int> lst2)
         {
@@ -204,26 +209,115 @@ namespace ConsoleApp10
             return comb;
         }
 
+
+        public static int CountList<T>(Node<T> head)
+        {
+            int counter = 0;
+            while (head != null)
+            {
+                counter++;
+                head = head.GetNext();//i++
+            }
+            return counter;
+        }
+
+
+        //עושה ממוצע לכל הערכים בשרשרת
+        public static double Average(Node<int> lst)
+        {
+            double count = 0;
+            double counter = 0;
+            while (lst != null)
+            {
+                count += lst.GetValue();
+                counter++;  
+                lst = lst.GetNext();
+            }
+            return count/counter;
+        }
+
+
+        //אם מספר הערכים שגדולים מהממוצע, שווה למספר הערכים שקטן מהממוצע, הרשימה מאוזנת והפעולה תחזיר true 
+        public static bool IsMeozan(Node<int> lst)
+        {
+            int countBigger = 0;
+            int countSmaller = 0;
+            while (lst != null)
+            {
+                if(lst.GetValue() > Average(lst)) { countBigger++; }
+                else { countSmaller++; }
+                lst = lst.GetNext();
+            }
+            return countBigger==countSmaller;
+        }
+
+        public static Node<T> Deletevlue<T>(Node<T> lst, T value)
+        {
+            Node<T> head = lst;
+            if (lst == null)
+                return head;
+
+            if (lst.GetValue().Equals(value))
+            {
+                head = lst.GetNext();
+                lst.SetNext(null);
+                return head;
+            }
+            Node<T> next = lst.GetNext();
+            while (lst.HasNext() && !next.GetValue().Equals(value))
+            {
+                lst = next;
+                next = lst.GetNext();
+            }
+            lst.SetNext(next.GetNext());
+            next.SetNext(null);
+
+            return head;
+        }
+
+
+        public static int FindMax(Node<int> lst)
+        {
+            int max = int.MinValue;
+            while (lst != null)
+            {
+                if (lst.GetValue() > max)
+                {
+                    max = lst.GetValue();
+                    lst = lst.GetNext();
+                }
+
+            }
+            return max;
+        }
+
+        public static void DeleteBiggest(Node<int> lst)
+        {
+            int max = 0;
+            while(lst != null)
+            {
+                max = FindMax(lst);
+                Deletevlue(lst, max);
+                lst = lst.GetNext();
+            }
+        }
+
+        //פעולה שמוחקת מהרשימה את
+        //n
+        //האיברים הגדולים ביותר
+        public static void DeleteBiggerN(Node<int> lst, int n)
+        {
+            for(int i=0; i<n; i++)
+            {
+                DeleteBiggest(lst);
+            }
+        }
         static void Main(string[] args)
         {
-            Node<int> lst1 = new Node<int>(4, new Node<int>(5, new Node<int>(6, new Node<int>(7))));//[4, next]=>[5, next]=>[6, next]=>[7, next]=>null
-
-            Console.WriteLine(IsAscending(lst1));//should print True
-            Console.WriteLine(IsAscendingRecursive(lst1));//should print True
-            Node<int> lst2 = new Node<int>(4, new Node<int>(5, new Node<int>(6, new Node<int>(2))));//[4, next]=>[5, next]=>[6, next]=>[2, next]=>null
-            Console.WriteLine(IsAscending(lst2));//should print False
-            Console.WriteLine(IsAscendingRecursive(lst2));//should print False
-            Node<int> lst3 = new Node<int>(4, new Node<int>(5, new Node<int>(4, new Node<int>(9))));//[4, next]=>[5, next]=>[4, next]=>[9, next]=>null
-            Console.WriteLine(IsAscending(lst3));//should print False
-            Console.WriteLine(IsAscendingRecursive(lst3));//should print False
-
-            Node<char> lst4 = new Node<char>('t', new Node<char>('A', new Node<char>('l', new Node<char>('s', new Node<char>('i')))));//['t', next]=>['a', next]=>['l', next]=>['s', next]=>['i', next]=>null
-            Console.WriteLine(IsExists(lst1, 5));//should print True
-            Console.WriteLine(IsExists(lst4, 'i'));//should print True
-            Console.WriteLine(IsExists(lst4, 'I'));//should print False
-            Console.WriteLine(IsExistsRecursive(lst1, 5));//should print True
-            Console.WriteLine(IsExistsRecursive(lst4, 'i'));//should print True
-            Console.WriteLine(IsExistsRecursive(lst4, 'I'));//should print False 
+            Node<int> lst1 = new Node<int>(4, new Node<int>(5, new Node<int>(7, new Node<int>(8))));
+            Node<int> lst2 = new Node<int>(3, new Node<int>(4, new Node<int>(5, new Node<int>(6))));
+            DeleteBiggerN(lst2, 2);
+            Console.WriteLine(lst2);
         }
     }
 }
