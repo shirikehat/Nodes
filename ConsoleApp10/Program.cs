@@ -444,21 +444,51 @@ namespace ConsoleApp10
         }
 
 
-        public static Node<int> CompList(Node<int> lst)
+        //מכניסה בין כל שני תאיםת תא חש שהוא ההפרש בניהם
+        public static void CompList(Node<int> lst)
         {
-            Node<int> head = lst;
+            
             Node<int> nxt = lst.GetNext();
-            while(lst!=null)
+            while(lst!=null && lst.HasNext())
             {
-                lst.SetNext(new Node<int>(nxt.GetValue()-lst.GetValue()));
-                lst=lst.GetNext();
-                head.SetNext(nxt);
-                
-                lst= lst.GetNext();
-                nxt=nxt.GetNext();
+                Node<int> newN= new Node<int>(nxt.GetValue()-lst.GetValue(), nxt);
+                lst.SetNext(newN);
+                lst = nxt;
+                nxt = nxt.GetNext();
             }
-            return head;
+           
         }
+
+
+        public static int CountFirst(Node<int> lst, int n) 
+        {
+            int counter = 0;
+            while (lst != null && lst.GetValue()!=n)
+            {
+                counter++;
+                lst = lst.GetNext();
+            }
+            if(lst!=null) return counter;
+            return -1;   
+        }
+
+
+        public static int CountLast(Node<int> lst, int n)
+        {
+            lst=Reverse(lst);
+            return CountFirst(lst, n);
+        }
+
+
+        public static int CalcWeight(Node<int> lst, int n)
+        {
+            int first=CountFirst(lst,n);
+            int last=CountLast(lst,n);
+
+            if(first==-1) return -1;
+            return first+last;
+        }
+
 
         static void Main(string[] args)
         {
@@ -466,7 +496,8 @@ namespace ConsoleApp10
             Node<int> lst2 = new Node<int>(4, new Node<int>(5, new Node<int>(6)));
 
             Console.WriteLine(lst1);
-            Console.WriteLine(CompList(lst1));
+            CompList(lst1);
+            Console.WriteLine(lst1);
         }
     }
 }
