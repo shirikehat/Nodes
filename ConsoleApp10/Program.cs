@@ -67,7 +67,7 @@ namespace ConsoleApp10
             return IsExistsRecursive<T>(lst.GetNext(), x);
         }
 
-        //שאלה 2
+        //סופרת כמה רצפים יש לערך בשרשרת
         public static int RezefCount(Node<int> lst, int x)
         {
             int counter = 0;
@@ -107,28 +107,28 @@ namespace ConsoleApp10
         }
 
 
-        //שאלה 6
+        //מוחקת כפילויות מהשרשרת היא לא עובדת בנתייםםםםם
         public static Node<int> NoDouble(Node<int> lst)
         {
             Node<int> head = new Node<int>(lst.GetValue());
-            Node<int> tail= head;  
-            
+            Node<int> tail = head;
+
             while (lst != null && lst.HasNext())
             {
-                if(lst.GetNext().GetValue() == lst.GetValue())
+                if (lst.GetNext().GetValue() == lst.GetValue())
                 {
-                    
+
                     tail.SetNext(new Node<int>(lst.GetNext().GetNext().GetValue()));
-                    tail=tail.GetNext();
-                    
+                    tail = tail.GetNext();
+
                 }
-                lst=lst.GetNext();
+                lst = lst.GetNext();
             }
             return head;
         }
 
 
-        //שאלה 8
+        //בודקת אם השרשרת מסודרת בסדר עולה 
         public static bool IsAscending(Node<int> lst)
         {
             while (lst.HasNext())
@@ -143,7 +143,7 @@ namespace ConsoleApp10
         }
 
 
-        //שאלה 10
+        //יוצרת שרשרת חדשה עם נאמ חוליות, שמתחילה במספר בגינר וממשיכה בסדר עולה
         public static Node<int> Creat(int beginner, int num)
         {
             Node<int> lst = new Node<int>(beginner);
@@ -155,6 +155,8 @@ namespace ConsoleApp10
             return lst;
         }
 
+
+        //מוסיפה חולייה לסוף שרשרת
         public static void AddToEnd<T>(Node<T> newNode, Node<T> lst)
         {
             while (lst.HasNext())
@@ -164,6 +166,8 @@ namespace ConsoleApp10
             lst.SetNext(newNode);
         }
 
+
+        //מוסיפה חוליה לאמצע שרשרת
         public static void AddToMiddle(Node<int> lst, int val)
         {
             Node<int> newNode = new Node<int>(val);
@@ -175,29 +179,30 @@ namespace ConsoleApp10
             lst.SetNext(newNode);
         }
 
-        
 
+
+        //ממזגת שתי שרשראות
         public static Node<int> Merge(Node<int> lst1, Node<int> lst2)
         {
             Node<int> comb = new Node<int>(lst1.GetValue());
             lst1 = lst1.GetNext();
             Node<int> tail = comb;
-            while (lst1 != null && lst2!=null)
+            while (lst1 != null && lst2 != null)
             {
                 tail.SetNext(new Node<int>(lst2.GetValue()));
-                tail= tail.GetNext();
+                tail = tail.GetNext();
 
                 tail.SetNext(new Node<int>(lst1.GetValue()));
                 tail = tail.GetNext();
 
 
-                lst1 =lst1.GetNext();
-                lst2 = lst2.GetNext(); 
+                lst1 = lst1.GetNext();
+                lst2 = lst2.GetNext();
             }
-            while(lst1 != null)
+            while (lst1 != null)
             {
-                tail.SetNext(new Node<int>(lst1.GetValue())); 
-                tail= tail.GetNext();
+                tail.SetNext(new Node<int>(lst1.GetValue()));
+                tail = tail.GetNext();
                 lst1 = lst1.GetNext();
             }
             while (lst2 != null)
@@ -210,6 +215,7 @@ namespace ConsoleApp10
         }
 
 
+        //סופרת כמה חוליות יש בשרשרת
         public static int CountList<T>(Node<T> head)
         {
             int counter = 0;
@@ -230,10 +236,10 @@ namespace ConsoleApp10
             while (lst != null)
             {
                 count += lst.GetValue();
-                counter++;  
+                counter++;
                 lst = lst.GetNext();
             }
-            return count/counter;
+            return count / counter;
         }
 
 
@@ -244,13 +250,15 @@ namespace ConsoleApp10
             int countSmaller = 0;
             while (lst != null)
             {
-                if(lst.GetValue() > Average(lst)) { countBigger++; }
+                if (lst.GetValue() > Average(lst)) { countBigger++; }
                 else { countSmaller++; }
                 lst = lst.GetNext();
             }
-            return countBigger==countSmaller;
+            return countBigger == countSmaller;
         }
 
+
+        //מוחקת חולייה לפי הערך
         public static Node<T> Deletevlue<T>(Node<T> lst, T value)
         {
             Node<T> head = lst;
@@ -276,6 +284,7 @@ namespace ConsoleApp10
         }
 
 
+        //מוצאת את הערך הכי גדול בשרשרת
         public static int FindMax(Node<int> lst)
         {
             int max = int.MinValue;
@@ -291,10 +300,12 @@ namespace ConsoleApp10
             return max;
         }
 
+
+        //מוחקת את החולייה עם הערך הכי גדול בשרשרת
         public static void DeleteBiggest(Node<int> lst)
         {
             int max = 0;
-            while(lst != null)
+            while (lst != null)
             {
                 max = FindMax(lst);
                 Deletevlue(lst, max);
@@ -307,17 +318,124 @@ namespace ConsoleApp10
         //האיברים הגדולים ביותר
         public static void DeleteBiggerN(Node<int> lst, int n)
         {
-            for(int i=0; i<n; i++)
+            for (int i = 0; i < n; i++)
             {
                 DeleteBiggest(lst);
             }
         }
+
+
+        //הסכום של כל הערכים בשרשרת
+        public static int CountVals(Node<int> lst)
+        {
+            int counter = 0;
+            Node<int> head = lst;
+            while (head != null)
+            {
+                counter += head.GetValue();
+                head = head.GetNext();
+            }
+            return counter;
+        }
+
+
+        //כ שרשרת מייצגת מספר שכל חולייה בה היא ספרהת הפעולה תבדוק איזה רשימה מייצגת מספר גדול יותר תחזיר 1 אם זה 1, 2 אם זה 2, 0 אם הן שוות
+        public static int WhoBigger(Node<int> lst1, Node<int> lst2)
+        {
+            if (CountList(lst1) > CountList(lst2)) return 1;
+            else if (CountList(lst1) < CountList(lst2)) return 2;
+
+            while (lst1 != null && lst2 != null)
+            {
+                if (lst1.GetValue() > lst2.GetValue()) return 1;
+                else if (lst1.GetValue() < lst2.GetValue()) return 2;
+                lst1 = lst1.GetNext();
+                lst2 = lst2.GetNext();
+            }
+            return 0;
+        }
+
+
+
+        //השרשרת השנייה מוכלת בתוך הראשונה, הפעולה תמחוק מהראשונה את השרשרת השנייה (ותשאיר את השנייה כמו שהיא)
+        public static Node<int> TakePart(Node<int> lst1, Node<int> lst2)
+        {
+            Node<int> prv = lst1;
+            Node<int> nxt = lst2;
+            Node<int> tail = lst2;
+
+            while (tail.HasNext())
+            {
+                tail = tail.GetNext();
+            }
+
+            while (prv != null)
+            {
+                while (prv == nxt)
+                {
+                    prv = prv.GetNext();
+                    nxt = nxt.GetNext();
+                }
+                prv = lst1;
+                nxt = lst2;
+
+                prv = prv.GetNext();
+            }
+            return lst1;
+        }
+
+
+
+
+
+        //הפעולה תהפוך את השרשרת
+        public static Node<int> Reverse(Node<int> lst)
+        {
+            Node<int> prev = lst;
+            Node<int> curr = lst.GetNext();
+            Node<int> temp = lst;
+
+            prev.SetNext(null);
+
+            while (curr != null)
+            {
+                temp = curr.GetNext();
+                curr.SetNext(prev);
+                prev = curr;
+                curr = temp;
+            }
+
+            lst = prev;
+            return lst;
+        }
+
+
+        //פעולה שיוצרת שרשרת חדשה, כל חולייה בה היא ספרה מהסכום של שתי השרשראות שהיא מקבלת
+        public static Node<int> Sum(Node<int> lst1, Node<int> lst2)
+        {
+            int sum = CountVals(lst1) + CountVals(lst2);
+            Node<int> head = new Node<int>(sum % 10, lst2);
+            Node<int> tail = head;
+            sum = sum / 10;
+            while (tail.HasNext())
+            {
+                tail.SetNext(new Node<int>(sum % 10));
+                tail = tail.GetNext();
+                sum = sum / 10;
+            }
+            
+            return Reverse(head);
+        }
+
+
+
+
         static void Main(string[] args)
         {
-            Node<int> lst1 = new Node<int>(4, new Node<int>(5, new Node<int>(7, new Node<int>(8))));
-            Node<int> lst2 = new Node<int>(3, new Node<int>(4, new Node<int>(5, new Node<int>(6))));
-            DeleteBiggerN(lst2, 2);
-            Console.WriteLine(lst2);
+            Node<int> lst1 = new Node<int>(4, new Node<int>(5, new Node<int>(6, new Node<int>(7, new Node<int>(7, new Node<int>(8))))));
+            Node<int> lst2 = new Node<int>(4, new Node<int>(5, new Node<int>(6)));
+            
+            Console.WriteLine(Sum(lst1, lst2));
         }
     }
 }
