@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Linq.Expressions;
 
 namespace ConsoleApp10
 {
@@ -428,14 +429,44 @@ namespace ConsoleApp10
         }
 
 
+        //יוצרת רשימה חדשה עם ערכים רנדומליים
+        public static Node<int> RandomList(int Length, int start, int end)
+        {
+            Random rnd= new Random();
+            Node<int> head= new Node<int>(rnd.Next(start, end+1));
+            Node<int> lst = head;
+            for(int i=0; i<Length-1; i++)
+            {
+                lst.SetNext(new Node<int>(rnd.Next(start, end+1)));
+                lst=lst.GetNext();
+            }
+            return head;
+        }
 
+
+        public static Node<int> CompList(Node<int> lst)
+        {
+            Node<int> head = lst;
+            Node<int> nxt = lst.GetNext();
+            while(lst!=null)
+            {
+                lst.SetNext(new Node<int>(nxt.GetValue()-lst.GetValue()));
+                lst=lst.GetNext();
+                head.SetNext(nxt);
+                
+                lst= lst.GetNext();
+                nxt=nxt.GetNext();
+            }
+            return head;
+        }
 
         static void Main(string[] args)
         {
             Node<int> lst1 = new Node<int>(4, new Node<int>(5, new Node<int>(6, new Node<int>(7, new Node<int>(7, new Node<int>(8))))));
             Node<int> lst2 = new Node<int>(4, new Node<int>(5, new Node<int>(6)));
-            
-            Console.WriteLine(Sum(lst1, lst2));
+
+            Console.WriteLine(lst1);
+            Console.WriteLine(CompList(lst1));
         }
     }
 }
